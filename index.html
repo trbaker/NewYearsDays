@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HZWNB3WHS6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-HZWNB3WHS6');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where is the New Year? 2027</title>
+<meta name="description" content="An AP Human Geography classroom activity: mapping eight New Year celebrations of 2027 with ArcGIS to study calendars, cultural diffusion, and cultural landscapes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://js.arcgis.com/4.34/esri/themes/light/main.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="bar" aria-label="Sections">
+  <a href="#launch">1 Launch</a><a href="#investigate">2 Investigate</a><a href="#analyze">3 Analyze</a><a href="#synthesize">4 Synthesize</a><a href="#teacher">Teacher guide</a>
+  <span class="sp"></span>
+  <button class="btn" id="soundBtn" aria-pressed="true">Sound on</button>
+</nav>
+
+<header class="hero band" id="launch">
+  <svg class="sky" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" id="sky"></svg>
+  <div class="wrap heroGrid" style="position:relative">
+    <div>
+      <h1>Where is the New Year? Mapping the New Years' days of 2027</h1>
+      <p class="lede">At midnight on January 1, 2027, the world will count down together. But for billions of people, that's not when the new year starts. Their year begins with the moon, the spring equinox, or a star cluster rising before dawn.</p>
+      <p style="color:#e9e3f7"><b>Warm-up (3 min):</b> Press <i>Strike midnight</i>. Only some of these counters change. With a partner, decide why the others wait, and what that tells you about where calendars come from.</p>
+      <button class="btn primary" id="midnight">Strike midnight</button>
+    </div>
+    <div class="counters" id="counters" aria-live="polite"></div>
+  </div>
+</header>
+
+<main>
+<section class="band" id="investigate">
+  <div class="wrap">
+    <h2>Investigate eight new years</h2>
+    <p class="lede">Open each case file. The map flies to where the celebration began (its <b>hearth</b>), shades where it is observed today, and draws the documented paths of its spread. Read the case, study the map, then fill in your field notebook before comparing it with the reference notes.</p>
+    <div class="inv">
+      <div class="cases" id="cases" role="group" aria-label="Case files"></div>
+      <div>
+        <div class="mapbox">
+          <div id="viewDiv" role="application" aria-label="ArcGIS map of the selected celebration"></div>
+          <div class="pulse" id="pulse"></div>
+          <div class="mpop" id="mpop" role="dialog" aria-live="polite" aria-label="Map details"><button class="x" id="mpopX" aria-label="Close">×</button><div id="mpopBody"></div></div>
+          <div class="ticker" id="ticker" aria-live="polite"></div>
+          <div class="maptools"><button class="btn" id="waveBtn" hidden>Play the midnight wave</button><button class="btn" id="resetBtn">Re-center</button></div>
+          <div class="mapmsg" id="mapmsg"><div><h3>The map couldn't load</h3><p>This activity uses ArcGIS Online (js.arcgis.com and services.arcgis.com). If your school network blocks them, ask your tech team to allow those sites. Everything else on the page still works.</p></div></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <p class="small" style="margin-top:6px">Map data: Esri Living Atlas, World Countries (Generalized) and World Time Zones; Esri light gray canvas basemap. Shading and spread lines are generalized for teaching.</p>
+      </div>
+    </div>
+    <div class="cf">
+      <article class="reading" id="reading" aria-live="polite"></article>
+      <form class="nb" id="nb" autocomplete="off">
+        <h3>Field notebook: <span id="nbTitle"></span></h3>
+        <fieldset><legend>1. What kind of calendar sets this date?</legend>
+          <div class="opts" id="calOpts"></div></fieldset>
+        <fieldset><legend>2. Which types of diffusion spread it? (check all that apply)</legend>
+          <div class="opts" id="difOpts"></div></fieldset>
+        <label for="nbLand"><b>3. One piece of cultural landscape evidence</b></label>
+        <textarea id="nbLand" placeholder="Something you could see or hear in a place celebrating it"></textarea>
+        <label for="nbWhy" style="display:block;margin-top:12px"><b>4. Why does the year begin at this time of year?</b></label>
+        <textarea id="nbWhy" placeholder="Think about seasons, farming, the sky, religion, or politics"></textarea>
+        <div class="actions"><button type="button" class="btn primary" id="compareBtn">Compare with reference notes</button><button type="button" class="btn" id="nextBtn">Next case</button></div>
+        <div class="key" id="key" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="analyze" style="background:var(--panel)">
+  <div class="wrap">
+    <h2>Analyze: one year, eight starting lines</h2>
+    <p class="lede">Each marker shows where a new year falls in the Gregorian year. Rings separate the calendar types: solar on the outside, then star-based, lunisolar, and lunar at the center. Drag the slider to 2038 and watch which markers stay put and which drift.</p>
+    <div class="an">
+      <div>
+        <div class="wheelbox"><svg id="wheel" viewBox="0 0 440 440" role="img" aria-label="Calendar wheel showing the Gregorian dates of eight new year celebrations"></svg></div>
+        <div class="ctl">
+          <span class="yr" id="yrOut">2027</span>
+          <input type="range" id="yr" min="2027" max="2038" step="1" value="2027" aria-label="Year">
+          <span class="opts"><label><input type="checkbox" id="trails"> Show 2027–2038 paths</label></span>
+        </div>
+        <div class="legend"><span><i style="background:var(--solar)"></i>Solar</span><span><i style="background:var(--star)"></i>Star-based</span><span><i style="background:var(--luni)"></i>Lunisolar</span><span><i style="background:var(--lunar)"></i>Lunar</span></div>
+      </div>
+      <div>
+        <div class="scroll"><table id="dates"><thead><tr><th>New year</th><th>Calendar</th><th>Date in <span id="yrTh">2027</span></th><th>Year begins</th></tr></thead><tbody></tbody></table></div>
+        <p class="small">Islamic dates follow the Umm al-Qura calendar and can shift a day or two where months begin with a sighting of the new moon. Hebrew and Islamic days begin at sunset the evening before. Matariki dates are set in New Zealand law.</p>
+        <h3 style="margin-top:18px">Discuss with your partner</h3>
+        <ol class="prompts">
+          <li>Which marker moves the most between 2027 and 2038? Use the idea of a 354-day year to explain why.</li>
+          <li>Lunar New Year and Rosh Hashanah also move, but they never leave their season. What do lunisolar calendars add to keep them there?</li>
+          <li>Three of the solar new years begin near an equinox or solstice, or at the end of a rainy season. What does that suggest about the people who created them?</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="synthesize">
+  <div class="wrap">
+    <h2>Synthesize: Free response</h2>
+    <p class="lede">Use the map, the case files, and the calendar wheel as your stimulus. Answer in complete sentences. When you're finished, copy your work into your class's assignment.</p>
+    <div class="stim"><b>Stimulus.</b> In 2027, the Gregorian New Year falls on January 1, Lunar New Year on February 6, Nowruz on March 21, the Islamic New Year on June 6, and Rosh Hashanah at sundown on October 1. Between 2027 and 2038, the Islamic New Year moves from June to early February. The other dates stay within the same season.</div>
+    <label for="sName" style="font-weight:700;display:block;margin-bottom:6px">Your name</label>
+    <input type="text" id="sName" style="max-width:420px;margin-bottom:18px">
+    <div class="frq" id="frq"></div>
+    <div class="actions">
+      <button class="btn primary" id="copyBtn">Copy notebook and answers</button>
+      <button class="btn" id="printBtn">Print or save as PDF</button>
+      <button class="btn" id="clearBtn">Clear my work</button>
+    </div>
+    <textarea id="copyOut" aria-label="Your work as text" readonly></textarea>
+    <p class="small" style="margin-top:8px">Your answers are saved in this browser only. Copy them before you switch devices.</p>
+  </div>
+</section>
+
+<section class="band tg" id="teacher">
+  <div class="wrap">
+    <h2>Teacher guide</h2>
+    <p class="small" style="margin-bottom:10px">AP Human Geography · Unit 3 Cultural Patterns and Processes · one 45-minute period</p>
+    <p class="lede">Students spend this period classifying calendars and diffusion, reading cultural landscapes, and explaining a pattern across scales, the same thinking that Unit 3 questions ask for.</p>
+    <details open><summary>Lesson plan (45 minutes)</summary>
+      <div class="scroll"><table class="stack"><thead><tr><th>Phase</th><th>Minutes</th><th>What students do</th><th>Teacher moves</th></tr></thead><tbody>
+        <tr><td>1 Launch</td><td class="num">5</td><td>Strike midnight; explain why only the Gregorian and Thai counters change.</td><td>Project the page. Cold-call two pairs. Introduce <i>solar, lunar, lunisolar</i>.</td></tr>
+        <tr><td>2 Investigate</td><td class="num">20</td><td>Pairs complete the notebook for their assigned cases, then compare with the reference notes.</td><td>Jigsaw: groups of four, each pair takes two cases (suggested: Jan 1 + Islamic, Lunar + Matariki, Nowruz + Enkutatash, Songkran + Rosh Hashanah). Run the midnight wave once for the class.</td></tr>
+        <tr><td>3 Analyze</td><td class="num">10</td><td>Use the wheel slider and discuss the three prompts.</td><td>Drag the slider live. Ask why the Islamic marker moves about 11 days a year.</td></tr>
+        <tr><td>4 Synthesize</td><td class="num">10</td><td>Begin the free response; finish for homework.</td><td>Collect the copied text through your LMS. Score with the guide below.</td></tr>
+      </tbody></table></div>
+      <p class="small">Setup: one device per pair with headphones optional, or one projector for a whole-class version. Sound can be turned off in the top bar. Notebook answers save in each browser.</p>
+    </details>
+    <details><summary>AP Human Geography CED alignment</summary>
+      <div class="scroll"><table class="stack"><thead><tr><th>Topic</th><th>Learning objective</th><th>Where students do it</th><th>Depth</th></tr></thead><tbody>
+        <tr><td>3.4 Types of Diffusion</td><td>IMP-3.A</td><td>Notebook question 2 for each case; FRQ part C</td><td>Central</td></tr>
+        <tr><td>3.5 Historical Causes of Diffusion</td><td>IMP-3.B</td><td>Gregorian adoption map (colonialism, imperialism); Indian calendar spread along trade routes; Ethiopia's calendar surviving without long colonization; FRQ parts D–E</td><td>Central</td></tr>
+        <tr><td>3.7 Diffusion of Religion and Language</td><td>IMP-3.D</td><td>Universalizing (Islam) vs. ethnic (Judaism) spread patterns; Hijra as relocation</td><td>Central</td></tr>
+        <tr><td>3.8 Effects of Diffusion</td><td>IMP-3.E</td><td>Syncretism (Nowruz in Muslim societies, Tết and Seollal), cultural revival and resistance (Matariki, Kurdish Newroz); FRQ part F</td><td>Central</td></tr>
+        <tr><td>3.2 Cultural Landscapes</td><td>PSO-3.B</td><td>Notebook question 3: landscape evidence of each celebration</td><td>Exercised</td></tr>
+        <tr><td>3.3 Cultural Patterns</td><td>PSO-3.C</td><td>Reading map patterns of religion and ethnicity</td><td>Exercised</td></tr>
+        <tr><td>3.1 Introduction to Culture</td><td>PSO-3.A</td><td>Calendars as cultural traits; cultural relativism in the launch discussion</td><td>Exercised</td></tr>
+        <tr><td>3.6 Contemporary Causes of Diffusion</td><td>IMP-3.C</td><td>Globalization keeps January 1 as the shared civil date; diaspora festivals in global cities</td><td>Touched</td></tr>
+        <tr><td>1.1 Introduction to Maps; 1.2 Geographic Data</td><td>IMP-1.A, IMP-1.B</td><td>Reading a choropleth (adoption eras) and a GIS web map</td><td>Exercised</td></tr>
+        <tr><td>1.5 Human-Environmental Interaction</td><td>PSO-1.E</td><td>Notebook question 4: new years timed to equinoxes, rains, and harvests</td><td>Exercised</td></tr>
+        <tr><td>1.6 Scales of Analysis</td><td>PSO-1.F</td><td>FRQ part G: national holiday data vs. local diaspora celebrations</td><td>Exercised</td></tr>
+        <tr><td>2.12 Effects of Migration</td><td>IMP-2.C</td><td>Diaspora communities carrying new year traditions</td><td>Touched</td></tr>
+      </tbody></table></div>
+      <p><b>Course skills:</b> Skill 1 Concepts and Processes (central); Skill 2 Spatial Relationships (central); Skill 4 Source Analysis, reading case texts and landscape descriptions (central); Skill 3 Data Analysis, using the wheel and date table (incidental); Skill 5 Scale Analysis, in FRQ part G (incidental).</p>
+      <p class="small">Codes follow the 2019–2020 Course and Exam Description. Check them against your current CED edition.</p>
+    </details>
+    <details><summary>Free-response scoring guide (7 points)</summary>
+      <ol>
+        <li><b>A (1 pt)</b> Identifies the Islamic calendar as <i>lunar</i> and describes the date moving earlier each year (about 11 days; June 2027 to early February 2038).</li>
+        <li><b>B (1 pt)</b> Explains that 12 lunar months total about 354 days, short of the 365-day solar year, with no leap month. The Hebrew calendar is lunisolar and adds a 13th month seven times in 19 years, which keeps Rosh Hashanah in early autumn.</li>
+        <li><b>C (1 pt)</b> Describes relocation diffusion with a real example: Chinese migrants carrying Lunar New Year to San Francisco, Lima, or Port Louis; Jewish diaspora communities; Iranian Americans in Los Angeles; Polynesian voyagers carrying Matariki to Aotearoa; the Hijra.</li>
+        <li><b>D (1 pt)</b> Explains that European empires imposed the Gregorian calendar in colonial administration, law, and trade, so colonies and later independent states kept January 1. Accept hierarchical diffusion from the papacy to Catholic monarchs to colonies.</li>
+        <li><b>E (1 pt)</b> Explains one reason: Ethiopia avoided long-term colonization, so no colonial government replaced its calendar; the Ethiopian Orthodox Church keeps it in daily religious life; Iran's solar calendar is tied to Nowruz and national identity and is astronomically precise.</li>
+        <li><b>F (1 pt)</b> Explains Matariki's 2022 public holiday as cultural revival or resistance to assimilation: practices suppressed under colonization are now recognized by the state (hierarchical diffusion of an Indigenous tradition).</li>
+        <li><b>G (1 pt)</b> Explains a limitation of national data: shading a whole country hides diaspora and minority celebrations at local scale (Lunar New Year in Sydney or London, Kurdish Newroz inside Turkey), and a holiday's legal status doesn't show how many people take part.</li>
+      </ol>
+    </details>
+    <details><summary>Adapting for middle school</summary>
+      <p>Assign four cases instead of eight (January 1, Lunar New Year, Nowruz, Islamic New Year). Use FRQ parts A–D only, and offer these sentence starters:</p>
+      <ul><li>"This calendar follows the ___, so the date ___ each year."</li><li>"This spread by ___ diffusion because ___ moved/adopted it."</li><li>"In a place celebrating it, you might see ___."</li></ul>
+      <p><b>Vocabulary:</b> hearth, diffusion (relocation, contagious, hierarchical, stimulus), cultural landscape, diaspora, solar, lunar, lunisolar, equinox.</p>
+    </details>
+    <details><summary>Notes on accuracy and sources</summary>
+      <p>2027 dates were checked against the Royal Observatory Greenwich and Hong Kong Observatory (Lunar New Year), Hebcal (Rosh Hashanah), New Zealand's Matariki holiday schedule, Umm al-Qura tables (Islamic New Year), and published holiday calendars for Ethiopia and Iran. The March 2027 equinox occurs at 20:24 UTC on March 20, which is after midnight on March 21 in Tehran. The spread lines are teaching generalizations: each marks a documented route or destination, not a single event. Country shading is simplified, and many places have mixed or regional practices.</p>
+    </details>
+    <details><summary>Technology</summary>
+      <p>The map uses the ArcGIS Maps SDK for JavaScript 4.34 with public Esri Living Atlas layers (World Countries Generalized, World Time Zones) and the light gray canvas basemap, so no ArcGIS login or API key is required. Schools that filter traffic need to allow <code>js.arcgis.com</code>, <code>services.arcgis.com</code>, <code>basemaps.arcgis.com</code>, and <code>static.arcgis.com</code>. Sounds are generated in the browser, so there are no audio files to load.</p>
+    </details>
+  </div>
+</section>
+</main>
+<footer><span>Where is the New Year? 2027 · a classroom activity for AP Human Geography. Celebration descriptions are summaries for teaching; communities observe each one in many local ways.</span><span class="credit">Designed by <a href="https://tbaker.com">Tom Baker</a>.</span></footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://js.arcgis.com/4.34/" onerror="window.__esriFail=true"></script>
+<script src="app.js"></script>
+</body>
+</html>
